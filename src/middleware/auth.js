@@ -7,8 +7,7 @@ export const auth = async (req, res, next) => {
    return next(new AppError(  " Authorization is Required" , 401));
   const token = berrerToken.split(' ')[1]
   jwt.verify(token , process.env.JWT_USERS , (err , decoded)=>{
-    if ( decoded.exp < parseFloat(new Date().getTime()/1000).toFixed(2)) {
-      // console.log(parseFloat(new Date().getTime()/1000).toFixed(2))
+    if (err) {
       return next(new AppError('token verification failed' , 403))
     } else {
         req.userId = decoded.id

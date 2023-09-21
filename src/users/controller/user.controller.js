@@ -34,7 +34,7 @@ export const login = errorHandler(async (req, res, next) => {
       process.env.SALT
     );
     if (!match) return next(new AppError("password mismatch"), 403);
-    const token = jwt.sign({ id: findEmail._id },process.env.JWT_USERS , {expiresIn :6});
+    const token = jwt.sign({ id: findEmail._id },process.env.JWT_USERS , {expiresIn :60*60});
     await User.findByIdAndUpdate({ _id: findEmail._id }, { _isActive: true });
     res.status(200).send({ mesage: "success login", token });
   } else {
