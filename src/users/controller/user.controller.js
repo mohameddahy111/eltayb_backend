@@ -21,11 +21,12 @@ export const addUser = errorHandler(async (req, res, next) => {
   res.status(200).send("success add user");
 });
 
-//---------------------------log in  -------------------------------------//
+//--------------------------- log in  -------------------------------------//
 
 export const login = errorHandler(async (req, res, next) => {
   const { email, password } = req.body;
   const findEmail = await User.findOne({ email });
+  // if(findEmail._isActive == true) return next(new AppError("this user already log in",))
   if (findEmail) {
     let match = bcrypt.compareSync(
       password,
@@ -33,7 +34,7 @@ export const login = errorHandler(async (req, res, next) => {
       process.env.SALT
     );
     if (!match) return next(new AppError("password mismatch"), 403);
-    const token = jwt.sign({ id: findEmail._id },process.env.JWT_USERS);
+    const token = jwt.sign({ id: findEmail._id },process.env.JWT_USERS , {expiresIn :6});
     await User.findByIdAndUpdate({ _id: findEmail._id }, { _isActive: true });
     res.status(200).send({ mesage: "success login", token });
   } else {
