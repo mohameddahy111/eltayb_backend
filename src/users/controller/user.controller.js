@@ -27,7 +27,7 @@ export const login = errorHandler(async (req, res, next) => {
     let match = bcrypt.compareSync(
       password,
       findEmail.password,
-      process.env.SALT
+      +process.env.SALT
     );
     if (!match) return next(new AppError("password mismatch"), 403);
     const token = jwt.sign({ id: findEmail._id }, process.env.JWT_USERS, {
