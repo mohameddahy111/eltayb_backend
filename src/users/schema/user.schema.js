@@ -10,10 +10,14 @@ const userschema = new mongoose.Schema({
   _isBlocked: { type: Boolean, default: false },
   _isVerify: { type: Boolean, default: true },
   _isActive: { type: Boolean, default: false },
+  changePasswordAt:{type: Date}
 },{timestamps:true});
 
-userschema.pre("save" , function(){
+userschema.pre( "save", function(){
   this.password = bcrypt.hashSync(this.password , +process.env.SALT)
+})
+userschema.pre( "findOneAndUpdate", function(){
+  this._update.password = bcrypt.hashSync(this._update.password , +process.env.SALT)
 })
 
 const User = mongoose.model("User", userschema);

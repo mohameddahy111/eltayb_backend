@@ -5,10 +5,12 @@ export const rolles = (roll)=>{
 // console.log(typeof roll )
  return async (req , res ,next) => {
   const findUser = await User.findById(req.userId)
-  !findUser&&  next(new AppError('User not found' ,404))
+  if (!findUser) {
+    next(new AppError('this user is delete not allow to do this ' ,403))
+  }
   const match =[]
   roll.map((x)=>{
-    if (x == findUser._isAdmin) {
+    if (x == findUser?._isAdmin) {
       match.push(x)
     }
   })
