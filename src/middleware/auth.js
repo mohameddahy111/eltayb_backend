@@ -18,7 +18,7 @@ export const auth = async (req, res, next) => {
   if (!user) {
     return next(new AppError("this user is deleted", 401));
   }
-  const time  = parseInt(user.changePasswordAt.getTime()/1000);
+  const time  = parseInt(user.changePasswordAt?.getTime()/1000);
   if (time > decode?.iat) {
     return next(new AppError("this token is not failed ", 403));
 

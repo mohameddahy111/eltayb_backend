@@ -37,16 +37,28 @@ export const addUser = errorHandler(async (req, res, next) => {
 //   }
 // });
 
-export const  login = errorHandler(async(req,res,next)=>{
-  const {password , email}=req.body
-  const findEmail = await User.findOne({email})
-  if(!findEmail){return next(new AppError(" this email is not correct") , 404);}
-  const match =findEmail&& bcrypt.compareSync(password  , findEmail?.password , process.env.SALT)
-  if(!match){return next(new AppError("password not match"))}
-  const token = jwt.sign({id:findEmail._id }, process.env.JWT_USERS ,{expiresIn :60*60})
- await User.updateOne({_id:findEmail._id }, {_isActive: true},{new :true})
-  res.status(200).send({massge:'success', token })
-})
+export const login = errorHandler(async (req, res, next) => {
+  const { password, email } = req.body;
+  const findEmail = await User.findOne({ email });
+  if (!findEmail) {
+    return next(new AppError(" this email is not correct"), 404);
+  }
+  const match =
+    findEmail &&
+    bcrypt.compareSync(password, findEmail?.password, process.env.SALT);
+  if (!match) {
+    return next(new AppError("password not match"));
+  }
+  const token = jwt.sign({ id: findEmail._id }, process.env.JWT_USERS, {
+    expiresIn: 60 * 60,
+  });
+  await User.updateOne(
+    { _id: findEmail._id },
+    { _isActive: true },
+    { new: true }
+  );
+  res.status(200).send({ massge: "success", token });
+});
 //------------------------------ update user----------------------------------//
 export const updateUser = errorHandler(async (req, res, next) => {
   const id = req.userId;
@@ -71,18 +83,27 @@ export const forgetPassword = errorHandler(async (req, res, next) => {
   const { email, password } = req.body;
   const findUser = await User.findOne({ email });
   if (findUser) {
-    await User.findOneAndUpdate({ email }, { password });
+    await User.findOneAndUpdate(
+      { email },
+      { password, changePasswordAt: Date.now() },
+      { new: true }
+    );
     res.status(200).send({ message: "success update password" });
   } else {
     return next(new AppError(" this email is not isExist "), 403);
   }
 });
 //------------------------------change password --------------------------------//
-export const changePassword = errorHandler(async (req, res, next)=>{
-  const {id} = req.params
-  const {newPassword}= req.body
-  const findUser =  await User.findOneAndUpdate({_id :id} , {password :newPassword ,changePasswordAt :Date.now() })
-  if(!findUser) {return next(new AppError("this user not exist "))}
- res.status(200).send({ message: "success change password"})
-
-})
+export const changePassword = errorHandler(async (req, res, next) => {
+  const { id } = req.params;
+  const { newPassword } = req.body;
+  const findUser = await User.findOneAndUpdate(
+    { _id: id },
+    { password: newPassword, changePasswordAt: Date.now() },
+    { new: true }
+  );
+  if (!findUser) {
+    return next(new AppError("this user not exist "));
+  }
+  res.status(200).send({ message: "success change password" });
+});
