@@ -18,27 +18,35 @@ export const addUser = errorHandler(async (req, res, next) => {
 
 //--------------------------- log in  -------------------------------------//
 
-export const login = errorHandler(async (req, res, next) => {
-  const { email, password } = req.body;
-  const findEmail = await User.findOne({ email });
-  //TODO : check isActive or not
-  // if(findEmail._isActive == true) return next(new AppError("this user already log in",))
-  if (findEmail) {
-    let match = bcrypt.compareSync(
-      password,
-      findEmail.password,
-      +process.env.SALT
-    );
-    if (!match) return next(new AppError("password mismatch"), 403);
-    const token = jwt.sign({ id: findEmail._id }, process.env.JWT_USERS, {
-      expiresIn: 60 * 60,
-    });
-    await User.findByIdAndUpdate({ _id: findEmail._id }, { _isActive: true });
-    res.status(200).send({ mesage: "success login", token });
-  } else {
-    return next(new AppError(" this email is not correct"), 404);
-  }
-});
+// export const login = errorHandler(async (req, res, next) => {
+//   const { email, password } = req.body;
+//   const findEmail = await User.findOne({ email });
+//   //TODO : check isActive or not
+//   // if(findEmail._isActive == true) return next(new AppError("this user already log in",))
+//   if (findEmail) {
+//    let match = bcrypt.compareSync(password ,findEmail.password, process.env.SALT)
+//    console.log(match)
+//     if (!match){ return next(new AppError("password mismatch"), 403)};
+//     const token = jwt.sign({ id: findEmail._id }, process.env.JWT_USERS, {
+//       expiresIn: 60 * 60,
+//     });
+//     await User.findByIdAndUpdate({ _id: findEmail._id }, { _isActive: true });
+//     res.status(200).send({ mesage: "success login", token });
+//   } else {
+//     return next(new AppError(" this email is not correct"), 404);
+//   }
+// });
+
+export const  login = errorHandler(async(req,res,next)=>{
+  const {password , email}=req.body
+  const findEmail = await User.findOne({email})
+  if(!findEmail){return next(new AppError(" this email is not correct") , 404);}
+  const match =findEmail&& bcrypt.compareSync(password  , findEmail?.password , process.env.SALT)
+  if(!match){return next(new AppError("password not match"))}
+  const token = jwt.sign({id:findEmail._id }, process.env.JWT_USERS ,{expiresIn :60*60})
+ await User.updateOne({_id:findEmail._id }, {_isActive: true},{new :true})
+  res.status(200).send({massge:'success', token })
+})
 //------------------------------ update user----------------------------------//
 export const updateUser = errorHandler(async (req, res, next) => {
   const id = req.userId;
