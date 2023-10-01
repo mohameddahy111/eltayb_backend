@@ -9,7 +9,6 @@ export const addCategories = errorHandler(async (req, res, next) => {
     return next(new AppError("this title already exists"), 401);
   }
   if (req.file) {
-    console.log(req.file.path);
     const { public_id, secure_url } = await cloudinary.uploader.upload(
       req.file.path,
       { folder: "categories" }

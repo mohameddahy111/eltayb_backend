@@ -10,7 +10,7 @@ import brandsRouter from '../../brands/router/brands.router.js';
 const router = express.Router()
 router.use('/:idCategory/brands' , brandsRouter)
 router.get('/' , getAll(Category ,"brands"))
-router.post('/'  ,auth, rolles(['admin']) , uploadCloud().single('img') , addCategories)
+router.post('/'  ,auth, rolles(['admin']) , uploadCloud().single('img'), addCategories)
 router.patch('/:id'  ,auth, rolles(['admin']) , uploadCloud().single('img') , updateCategory)
 router.delete('/:id' ,auth, rolles(['admin']) , deleteItem(Category))
 export default router

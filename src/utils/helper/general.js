@@ -1,10 +1,17 @@
+import ApiFeatures from "../apiFetchers.js";
 import { AppError } from "../appError.js";
 import cloudinary from "../cloudnery.js";
 import { errorHandler } from "../errorHandler.js";
 
 export const getAll = (shema, option) => {
   return errorHandler(async (req, res, next) => {
-    const date = await shema.find().populate(option);
+    let lestOptions = new ApiFeatures(shema.find().populate(option), req.query)
+      .fields()
+      .filter()
+      .search()
+      .sort()
+      .pagination();
+    const date = await lestOptions.mongooesQuery;
     res.status(200).send(date);
   });
 };
