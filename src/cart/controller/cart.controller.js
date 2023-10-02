@@ -3,7 +3,8 @@ import Cart from "../schema/cart.schema.js";
 
 export const addCart = errorHandler(async (req, res, next) => {
   const cartIsExist = await Cart.findOne({ userId: req.userId });
-  console.log(req.userId)
+  // console.log(req.userId)
+  console.log(req.body)
   if (!cartIsExist) {
     const cart = new Cart({
       userId :req.userId,

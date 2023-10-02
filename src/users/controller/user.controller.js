@@ -31,9 +31,7 @@ export const login = errorHandler(async (req, res, next) => {
   if (!match) {
     return next(new AppError("password not match"));
   }
-  const token = jwt.sign({ id: findEmail._id }, process.env.JWT_USERS, {
-    expiresIn:"24h",
-  });
+  const token = jwt.sign({ id: findEmail._id }, process.env.JWT_USERS);
   await User.updateOne(
     { _id: findEmail._id },
     { _isActive: true },
