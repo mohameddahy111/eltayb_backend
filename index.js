@@ -4,6 +4,8 @@ import { connect } from './db/connect.js';
 import userRouter from './src/users/router/user.router.js';
 import categoriesRouter from './src/categories/router/categories.router.js';
 import productRouter from './src/product/router/product.router.js';
+import couponRouter from './src/coupon/router/coupon.router.js'
+import cartRouter from './src/cart/router/cart.router.js';
 import cors from 'cors';
 
 dotenv.config()
@@ -15,6 +17,8 @@ const port  = 3001
 app.use('/users/' , userRouter)
 app.use('/categories/' , categoriesRouter)
 app.use('/product/' , productRouter)
+app.use('/coupon/' ,couponRouter)
+app.use('/cart/' ,cartRouter)
 
 app.use((err , req, res ,next)=>{
   res.status(err.status || 400).send(err.message)

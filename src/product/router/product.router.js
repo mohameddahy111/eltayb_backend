@@ -5,7 +5,9 @@ import { auth } from "../../middleware/auth.js";
 import { rolles } from "../../middleware/rolles.js";
 import { uploadCloud } from "../../middleware/cloudinero.js";
 import { addProduct, updateProduct } from "../controller/product.controller.js";
+import reviewRouter from "../../reviews/router/review.router.js";
 const router = express.Router();
+router.use('/:productId' ,reviewRouter )
 router.get("/", getAll(Producte));
 router.post(
   "/",
