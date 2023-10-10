@@ -3,7 +3,7 @@ import { AppError } from "../appError.js";
 import cloudinary from "../cloudnery.js";
 import { errorHandler } from "../errorHandler.js";
 
-export const getAll = (shema, option) => {
+export const getAll = (shema, option, ) => {
   return errorHandler(async (req, res, next) => {
     let lestOptions = new ApiFeatures(shema.find().populate(option), req.query)
       .fields()

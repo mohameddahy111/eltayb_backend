@@ -1,3 +1,4 @@
+import { sendVirfiyEmail } from "../../email/sendEmail.js";
 import { AppError } from "../../utils/appError.js";
 import { errorHandler } from "../../utils/errorHandler.js";
 import User from "../schema/user.schema.js";
@@ -13,6 +14,10 @@ export const addUser = errorHandler(async (req, res, next) => {
   if (!user) {
     return next(new AppError(" Error inserting user" ,404));
   }
+  sendVirfiyEmail({
+    email :user.email,
+    url :`http://localhost:3001/users/verify/${user._id}`
+  })
   res.status(200).send("success add user");
 });
 
@@ -24,6 +29,9 @@ export const login = errorHandler(async (req, res, next) => {
   const findEmail = await User.findOne({ email });
   if (!findEmail) {
     return next(new AppError(" this email is not correct", 404));
+  }
+  if (!findEmail._isVerify) {
+    return next(new AppError(" this email is not verfiy", 409));
   }
   const match =
     findEmail &&
@@ -86,4 +94,15 @@ export const changePassword = errorHandler(async (req, res, next) => {
     return next(new AppError("this user not exist "));
   }
   res.status(200).send({ message: "success change password" });
+});
+ //------------------------------ verfiy email --------------------------------//
+ export const verfiyemail = errorHandler(async (req, res, next) => {
+const {id} = req.params;
+const user = await User.findByIdAndUpdate(id , {_isVerify :true})
+if (!user) {
+  return next(new AppError("this user not found "));
+
+}
+res.status(200).send({ message: "success verfiy emial" });
+
 });

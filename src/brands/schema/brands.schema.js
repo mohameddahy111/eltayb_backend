@@ -7,7 +7,7 @@ const categoriesSchema = new mongoose.Schema({
   createdBy:{type:mongoose.Types.ObjectId , ref :"User"},
   updatedBy:{type:mongoose.Types.ObjectId , ref :"User"}
 
-},{timestamps :true})
+},{timestamps :true ,toJSON:{virtuals :true} , toObject:{virtuals :true}})
 
 const Brands =  mongoose.model("Brands" , categoriesSchema)
 export default Brands

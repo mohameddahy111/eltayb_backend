@@ -10,7 +10,7 @@ const userschema = new mongoose.Schema({
   _isBlocked: { type: Boolean, default: false },
   _isVerify: { type: Boolean, default: true },
   _isActive: { type: Boolean, default: false },
-  changePasswordAt:{type: Date, default :Date.now()}
+  changePasswordAt:{type: Date}
 },{timestamps:true});
 
 userschema.pre( "save", function(){

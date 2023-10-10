@@ -7,6 +7,8 @@ const reviewShema =new mongoose.Schema({
   productId :{type :mongoose.Types.ObjectId , ref:"Product" ,  required :true},
 
 
-},{timestamps:true});
+},
+{ timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
+);
 const Review  = mongoose.model("Review" , reviewShema)
 export default Review

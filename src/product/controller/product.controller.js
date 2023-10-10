@@ -14,7 +14,6 @@ export const addProduct = errorHandler(async (req, res, next) => {
   req.body.createBy = req.userId;
   req.body.updateBy = req.userId;
   if (req.files.min_image) {
-    console.log(req.files);
     req.body.img = await addImages({
       path: req.files.min_image,
       folder: `/prodectes/${req.body.slug}`,

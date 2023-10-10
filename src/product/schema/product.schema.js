@@ -16,8 +16,8 @@ const producteSchema = new mongoose.Schema(
     stock: { type: Number, default: 0 },
     item_sell: { type: Number, default: 0 },
     price: { type: Number, required: true },
-    offer_value: { type: Number, default: 0 },
-    final_price: { type: Number, default: 0 },
+    offer_value: { type: Number,  },
+    final_price: { type: Number, },
     // ----------------------------Object------------------------------------//
     img: { type: Object },
     images: { type: [Object] },
@@ -25,16 +25,16 @@ const producteSchema = new mongoose.Schema(
     category: {
       type: mongoose.Types.ObjectId,
       required: true,
-      ref: "category",
+      ref: "Category",
     },
     subCategory: {
       type: mongoose.Types.ObjectId,
       // required: true,
-      ref: "subcategory",
+      ref: "Subcategory",
     },
-    brand: { type: mongoose.Types.ObjectId, required: true, ref: "brand" },
-    createBy: { type: mongoose.Types.ObjectId, required: true, ref: "user" },
-    updateBy: { type: mongoose.Types.ObjectId, required: true, ref: "user" },
+    brand: { type: mongoose.Types.ObjectId, required: true, ref: "Brands" },
+    createBy: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
+    updateBy: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
@@ -49,5 +49,10 @@ producteSchema.pre("findOneAndUpdate", function () {
     this._update.price - (this._update.price * this._update.offer_value) / 100
   ).toFixed(2);
 });
+producteSchema.virtual("reviews" ,{
+  foreignField:"productId",
+  localField:"_id",
+  ref:"Review"
+} )
 const Producte = mongoose.model("Product", producteSchema);
 export default Producte;

@@ -1,12 +1,32 @@
 import mongoose from "mongoose";
 
-const ordersShema =new mongoose.Schema({
-  comment :{type :String , required : [true , 'review comment is required '],trim:true },
-  rating :{type :Number , max :5 , min:1},
-  userId :{type :mongoose.Types.ObjectId , ref:"User" ,  required :true},
-  productId :{type :mongoose.Types.ObjectId , ref:"Product" ,  required :true},
+const ordersShema = new mongoose.Schema(
+  {
+    couponCode : {type:String},
+    userId: { type: mongoose.Types.ObjectId, ref: "User" },
+    cartId: { type: mongoose.Types.ObjectId, ref: "Cart" },
+    payment_Mathed: { type: String, default:"cashe" ,enums:['onlien' , "cashe"]},
+    order_state: { type: String , default:'prepar'  },
+    pay_state: { type: Boolean, default: false },
+    shippingAddress: {
+      city: { type: String },
+      street: { type: String },
+    },
+    cartItems: [
+      {
+        productId: { type: mongoose.Types.ObjectId, ref: "Product" },
+        quantity: { type: Number },
+        price: { type: Number },
+        final_price: { type: Number },
 
+      },
+    ],
 
-},{timestamps:true});
-const Orders  = mongoose.model("Orders" , ordersShema)
-export default Orders
+    payDate: { type: Date },
+    totlaPrice : { type: Number, required:true},
+    orgenalPrice: { type: Number, required:true}
+  },
+  { timestamps: true }
+);
+const Orders = mongoose.model("Orders", ordersShema);
+export default Orders;

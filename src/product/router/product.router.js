@@ -7,8 +7,14 @@ import { uploadCloud } from "../../middleware/cloudinero.js";
 import { addProduct, updateProduct } from "../controller/product.controller.js";
 import reviewRouter from "../../reviews/router/review.router.js";
 const router = express.Router();
-router.use('/:productId' ,reviewRouter )
-router.get("/", getAll(Producte));
+router.use("/:productId/review/", reviewRouter);
+router.get(
+  "/",
+  getAll(Producte, [
+    { path: "reviews",select:['comment' ,'rating'], populate: { path: "userId", select:[ "name"] } },
+    { path: "brand", select:['title' ]},{path :'category' ,select:['title']}
+  ])
+);
 router.post(
   "/",
   auth,
@@ -19,8 +25,15 @@ router.post(
   ]),
   addProduct
 );
-router.patch('/:id' , auth , rolles(["admin"]), uploadCloud().fields([    { name: "min_image", maxCount: 1 },
-{ name: "images", maxCount: 4 },
-]),updateProduct)
+router.patch(
+  "/:id",
+  auth,
+  rolles(["admin"]),
+  uploadCloud().fields([
+    { name: "min_image", maxCount: 1 },
+    { name: "images", maxCount: 4 },
+  ]),
+  updateProduct
+);
 router.delete("/:id", deleteItem(Producte));
 export default router;
