@@ -10,7 +10,7 @@ import User from '../schema/user.schema.js';
 const router = express.Router()
 router.get('/' ,auth,rolles(['admin' , 'user']), getAll(User))
 router.get('/verfiy/:id' , verfiyemail)
-router.get('userInfo' , auth , getUserInfo)
+router.get('/userInfo' , auth , getUserInfo)
 
 router.post('/' ,validetor(adduserValidation)  ,addUser)
 router.post('/login',validetor(loginValidation), login)
