@@ -12,7 +12,7 @@ export const addCart = errorHandler(async (req, res, next) => {
   if (quantity > product.stock) {
     return next(new AppError(`we have only  ${product.stock} from this product `, 404));
   }
-  req.body.price =  product.price;
+  req.body.price =  product.price_size.find((x)=>x.size ==req.body.size ).price;
   // req.body.descount = product.descount 
   req.body.final_price = product.final_price
 
@@ -29,7 +29,9 @@ export const addCart = errorHandler(async (req, res, next) => {
       (item) => item.productId == productId
     );
     if (product) {
-      product.quantity = quantity || product.quantity + 1;
+      if (product.size == req.body.size) {
+        product.quantity = quantity || product.quantity + 1
+      }
     } else {
       isExistCart.cartItems.push(req.body);
     }

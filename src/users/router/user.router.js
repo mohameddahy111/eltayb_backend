@@ -1,5 +1,5 @@
 import express from 'express';
-import { addUser, changePassword, forgetPassword, login, updateUser, verfiyemail } from '../controller/user.controller.js';
+import { addUser, changePassword, forgetPassword, getUserInfo, login, updateUser, verfiyemail } from '../controller/user.controller.js';
 import { auth } from '../../middleware/auth.js';
 import { rolles } from '../../middleware/rolles.js';
 import { validetor } from '../../middleware/valitetor.js';
@@ -10,6 +10,7 @@ import User from '../schema/user.schema.js';
 const router = express.Router()
 router.get('/' ,auth,rolles(['admin' , 'user']), getAll(User))
 router.get('/verfiy/:id' , verfiyemail)
+router.get('userInfo' , auth , getUserInfo)
 
 router.post('/' ,validetor(adduserValidation)  ,addUser)
 router.post('/login',validetor(loginValidation), login)

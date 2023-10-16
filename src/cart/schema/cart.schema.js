@@ -24,7 +24,7 @@ cartShema.pre("save", function () {
   let TAD =0
 
     this.cartItems.forEach((ele) => {
-      price = price +( ele.price * ele.quantity)
+      price = price +( ele.price_size.price * ele.quantity)
       TAD = TAD + (ele.final_price * ele.quantity)
     })
   this.totalPrice = price;
@@ -35,7 +35,7 @@ cartShema.pre("findOneAndUpdate", function () {
   let TAD =0
 
     this._update.cartItems.forEach((ele) => {
-      price = price +( ele.price * ele.quantity)
+      price = price +( ele.price_size.price * ele.quantity)
       TAD = TAD +(ele.final_price * ele.quantity)
 
     })

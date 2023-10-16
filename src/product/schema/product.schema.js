@@ -15,9 +15,14 @@ const producteSchema = new mongoose.Schema(
     quantity: { type: Number, default: 0 },
     stock: { type: Number, default: 0 },
     item_sell: { type: Number, default: 0 },
-    price: { type: Number, required: true },
-    offer_value: { type: Number,  },
-    final_price: { type: Number, },
+    price_size: [
+      {
+        size: { type: String, required: true },
+        price: { type: Number, required: true },
+      },
+    ],
+    offer_value: { type: Number },
+    final_price: { type: Number },
     // ----------------------------Object------------------------------------//
     img: { type: Object },
     images: { type: [Object] },
@@ -41,18 +46,18 @@ const producteSchema = new mongoose.Schema(
 
 producteSchema.pre("save", function () {
   this.final_price = parseFloat(
-    this.price - (this.price * this.offer_value) / 100
+    this.price_size.price - (this.price_size.price * this.offer_value) / 100
   ).toFixed(2);
 });
 producteSchema.pre("findOneAndUpdate", function () {
   this._update.final_price = parseFloat(
-    this._update.price - (this._update.price * this._update.offer_value) / 100
+    this._update.price_size.price - (this._update.price_size.price * this._update.offer_value) / 100
   ).toFixed(2);
 });
-producteSchema.virtual("reviews" ,{
-  foreignField:"productId",
-  localField:"_id",
-  ref:"Review"
-} )
+producteSchema.virtual("reviews", {
+  foreignField: "productId",
+  localField: "_id",
+  ref: "Review",
+});
 const Producte = mongoose.model("Product", producteSchema);
 export default Producte;

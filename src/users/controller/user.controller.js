@@ -18,7 +18,7 @@ export const addUser = errorHandler(async (req, res, next) => {
     email :user.email,
     url :`http://localhost:3001/users/verify/${user._id}`
   })
-  res.status(200).send("success add user");
+  res.status(201).send("success add user");
 });
 
 //--------------------------- log in  -------------------------------------//
@@ -106,3 +106,12 @@ if (!user) {
 res.status(200).send({ message: "success verfiy emial" });
 
 });
+
+export const getUserInfo = errorHandler(async (req, res, next) => {
+  const {id} = req.userId
+  const user  = await User.findById(id)
+  if (!user) {
+   return next(new AppError('this user not found' , 404))
+  }
+  res.status(200).send({message :'user found' , user})
+})
