@@ -108,8 +108,7 @@ res.status(200).send({ message: "success verfiy emial" });
 });
 
 export const getUserInfo = errorHandler(async (req, res, next) => {
-  const {id} = req.userId
-  const user  = await User.findById(id)
+  const user  = await User.findById(req.userId)
   if (!user) {
    return next(new AppError('this user not found' , 404))
   }
