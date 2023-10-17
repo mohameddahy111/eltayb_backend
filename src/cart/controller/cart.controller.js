@@ -4,7 +4,7 @@ import { errorHandler } from "../../utils/errorHandler.js";
 import Cart from "../schema/cart.schema.js";
 
 export const addCart = errorHandler(async (req, res, next) => {
-  const { productId, quantity } = req.body;
+  const { productId, quantity , size } = req.body;
   const product = await Producte.findOne({ _id: productId });
   if (!product) {
     return next(new AppError("Product not found", 404));
@@ -12,8 +12,7 @@ export const addCart = errorHandler(async (req, res, next) => {
   if (quantity > product.stock) {
     return next(new AppError(`we have only  ${product.stock} from this product `, 404));
   }
- const size_price =  product.price_size.find((x)=>x.size ==req.body.size );
- req.body.size = size_price.size
+ const size_price =  product.price_size.find((x)=>x.size == size );
  req.body.price = size_price.price
   // req.body.descount = product.descount 
   req.body.final_price = product.final_price
@@ -27,12 +26,17 @@ export const addCart = errorHandler(async (req, res, next) => {
     await cart.save();
     res.status(201).send({ message: "item is add to cart" });
   } else {
-    const product = isExistCart.cartItems.find(
+    const productItem = isExistCart.cartItems.filter(
       (item) => item.productId == productId
     );
-    if (product) {
-      if (product.size == req.body.size) {
-        product.quantity = quantity || product.quantity + 1
+    console.log(productItem)
+    if (productItem.length>0) {
+      const sameSize = productItem.find(ele=>ele.size == size)
+      if (sameSize) {
+        sameSize.quantity = quantity || sameSize.quantity + 1
+      }else{
+        isExistCart.cartItems.push(req.body);
+
       }
     } else {
       isExistCart.cartItems.push(req.body);
