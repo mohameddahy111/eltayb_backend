@@ -18,7 +18,7 @@ router.get(
 router.post(
   "/",
   auth,
-  rolles(["admin"]),
+  // rolles(["admin" ,"user"]),
   uploadCloud().fields([
     { name: "min_image", maxCount: 1 },
     { name: "images", maxCount: 4 },

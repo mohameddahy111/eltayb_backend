@@ -9,6 +9,7 @@ const cartShema = new mongoose.Schema(
         quantity: { type: Number },
         price: { type: Number },
         final_price: { type: Number },
+        size :{type :String}
         
       },
     ],

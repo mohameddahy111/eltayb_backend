@@ -45,7 +45,7 @@ export const login = errorHandler(async (req, res, next) => {
     { _isActive: true },
     { new: true }
   );
-  res.status(200).send({ massge: "success", token });
+  res.status(200).send({ message: "success", token });
 });
 //------------------------------ update user----------------------------------//
 export const updateUser = errorHandler(async (req, res, next) => {

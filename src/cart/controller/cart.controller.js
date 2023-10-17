@@ -12,7 +12,9 @@ export const addCart = errorHandler(async (req, res, next) => {
   if (quantity > product.stock) {
     return next(new AppError(`we have only  ${product.stock} from this product `, 404));
   }
-  req.body.price =  product.price_size.find((x)=>x.size ==req.body.size ).price;
+ const size_price =  product.price_size.find((x)=>x.size ==req.body.size );
+ req.body.size = size_price.size
+ req.body.price = size_price.price
   // req.body.descount = product.descount 
   req.body.final_price = product.final_price
 
