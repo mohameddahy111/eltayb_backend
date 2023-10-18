@@ -50,7 +50,7 @@ export const removItem = errorHandler(async (req, res, next) => {
   const userCart = await Cart.findOne({userId :req.userId})
   const cart = await Cart.findOneAndUpdate(
     { userId: req.userId },
-    { cartItems: userCart.cartItems.filter((item)=>item.productId != req.body.cartId) } ,
+    { cartItems: userCart.cartItems.filter((item)=>item.productId != req.body.itemId) } ,
     {new :true}
   );
   if(!cart){return next(new AppError('this item is not is exist in cart'))}
