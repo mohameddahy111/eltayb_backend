@@ -44,16 +44,16 @@ const producteSchema = new mongoose.Schema(
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
-producteSchema.pre("save", function () {
-  this.final_price = parseFloat(
-    this.price_size.price - (this.price_size.price * this.offer_value) / 100
-  ).toFixed(2);
-});
-producteSchema.pre("findOneAndUpdate", function () {
-  this._update.final_price = parseFloat(
-    this._update.price_size.price - (this._update.price_size.price * this._update.offer_value) / 100
-  ).toFixed(2);
-});
+// producteSchema.pre("save", function () {
+//   this.final_price = parseFloat(
+//     this.price_size.price - (this.price_size.price * this.offer_value) / 100
+//   ).toFixed(2);
+// });
+// producteSchema.pre("findOneAndUpdate", function () {
+//   this._update.final_price = parseFloat(
+//     this._update.price_size.price - (this._update.price_size.price * this._update.offer_value) / 100
+//   ).toFixed(2);
+// });
 producteSchema.virtual("reviews", {
   foreignField: "productId",
   localField: "_id",

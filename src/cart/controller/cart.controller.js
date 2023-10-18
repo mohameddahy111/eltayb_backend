@@ -29,7 +29,6 @@ export const addCart = errorHandler(async (req, res, next) => {
     const productItem = isExistCart.cartItems.filter(
       (item) => item.productId == productId
     );
-    console.log(productItem)
     if (productItem.length>0) {
       const sameSize = productItem.find(ele=>ele.size == size)
       if (sameSize) {
@@ -50,7 +49,7 @@ export const removItem = errorHandler(async (req, res, next) => {
   const userCart = await Cart.findOne({userId :req.userId})
   const cart = await Cart.findOneAndUpdate(
     { userId: req.userId },
-    { cartItems: userCart.cartItems.filter((item)=>item.productId != req.body.itemId) } ,
+    { cartItems: userCart.cartItems.filter((item)=>item._id != req.body.itemId) } ,
     {new :true}
   );
   if(!cart){return next(new AppError('this item is not is exist in cart'))}
