@@ -6,6 +6,8 @@ import Cart from "../schema/cart.schema.js";
 export const addCart = errorHandler(async (req, res, next) => {
   const { productId, quantity , size } = req.body;
   const product = await Producte.findOne({ _id: productId });
+  const findSize = product.price_size.find((x)=>x.size == size)
+  if(!findSize || findSize ==null)return next(new AppError('sorry this item not available now ' , 404))
   if (!product) {
     return next(new AppError("Product not found", 404));
   }
