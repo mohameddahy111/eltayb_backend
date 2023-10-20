@@ -108,7 +108,7 @@ res.status(200).send({ message: "success verfiy emial" });
 });
 
 export const getUserInfo = errorHandler(async (req, res, next) => {
-  const user  = await User.findById(req.userId)
+  const user  = await User.findById(req.userId).select({password :-1})
   if (!user) {
    return next(new AppError('this user not found' , 404))
   }
