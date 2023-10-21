@@ -10,4 +10,4 @@ router.use("/:idCart/order" ,orderRouter )
 
 router.post('/' , auth , rolles(['user' , "admin"]), addCart).get("/",auth ,getUserCart).patch('/' , auth , removItem)
 router.delete('/:id' ,auth, deleteItem(Cart))
-export default router
+export default router 

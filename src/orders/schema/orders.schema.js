@@ -5,7 +5,7 @@ const ordersShema = new mongoose.Schema(
     couponCode : {type:String},
     userId: { type: mongoose.Types.ObjectId, ref: "User" },
     cartId: { type: mongoose.Types.ObjectId, ref: "Cart" },
-    payment_Mathed: { type: String, default:"cashe" ,enums:['onlien' , "cashe"]},
+    payment_Mathed: { type: String, default:"cash" ,enums:['credit' , "cash"]},
     order_state: { type: String , default:'prepar'  },
     pay_state: { type: Boolean, default: false },
     shippingAddress: {
