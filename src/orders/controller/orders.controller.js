@@ -42,7 +42,7 @@ export const addCachOrders = errorHandler(async (req, res, next) => {
 export const getAllOrders = errorHandler(async (req, res, next) => {
   const orders = await Orders.find({ userId: req.userId }).populate({
     path: "cartItems.productId",
-    select: "title",
+    select: ["title"],
   });
   res.status(200).send(orders);
 });
