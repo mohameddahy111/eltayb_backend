@@ -22,6 +22,7 @@ export const addCachOrders = errorHandler(async (req, res, next) => {
   req.body.cartItems = cart.cartItems;
   req.body.orgenalPrice = cart.totalPrice;
   req.body.payment_Mathed = 'cash'
+  req.body.totlaPrice = totalPrice
   const order = await Orders.insertMany(req.body);
 
   if (order) {
