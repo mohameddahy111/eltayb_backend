@@ -9,20 +9,19 @@ export const addCachOrders = errorHandler(async (req, res, next) => {
   const cart = await Cart.findById(req.params.idCart);
   const coupon = await Coupon.findOne({ code: req.body.couponCode });
   if (!cart) return next(new AppError("Cart not found", 404));
-  const totalPrice = cart.TAD > 0 ? cart.TAD : parseFloat(cart.totalPrice + (cart.totalPrice *.15)+10).toFixed(2);
+  const totalPrice = cart.TAD > 0 ? cart.TAD : cart.totalPrice 
   if (coupon) {
     req.body.totlaPrice = parseFloat(
       totalPrice - (totalPrice * coupon.discont) / 100 +(totalPrice * .15)+10
     ).toFixed(2);
   } else {
-    req.body.totlaPrice = parseFloat(totalPrice).toFixed(2);
+    req.body.totlaPrice = parseFloat(totalPrice +(totalPrice*.15)+10).toFixed(2);
   }
   req.body.cartId = cart._id;
   req.body.userId = req.userId;
   req.body.cartItems = cart.cartItems;
   req.body.orgenalPrice = cart.totalPrice;
   req.body.payment_Mathed = 'cash'
-  req.body.totlaPrice = totalPrice
   const order = await Orders.insertMany(req.body);
 
   if (order) {
