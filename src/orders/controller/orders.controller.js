@@ -9,10 +9,10 @@ export const addCachOrders = errorHandler(async (req, res, next) => {
   const cart = await Cart.findById(req.params.idCart);
   const coupon = await Coupon.findOne({ code: req.body.couponCode });
   if (!cart) return next(new AppError("Cart not found", 404));
-  const totalPrice = cart.TAD > 0 ? cart.TAD : cart.totalPrice;
+  const totalPrice = cart.TAD > 0 ? cart.TAD : parseFloat(cart.totalPrice + (totalPrice *.15)+10).toFixed(2);
   if (coupon) {
     req.body.totlaPrice = parseFloat(
-      totalPrice - (totalPrice * coupon.discont) / 100
+      totalPrice - (totalPrice * coupon.discont) / 100 +(totalPrice * .15)+10
     ).toFixed(2);
   } else {
     req.body.totlaPrice = parseFloat(totalPrice).toFixed(2);
