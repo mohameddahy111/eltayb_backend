@@ -34,7 +34,7 @@ export const getWishList = errorHandler(async (req, res, next) => {
   const wishList = await List.findOne({ userId: req.userId }).populate(
     "products.productId"
   );
-  if (wishList) {
+  if (!wishList) {
     return res.status(200).send({ message: "wish List is Empty" });
   }
   res.status(200).send(wishList);
