@@ -6,7 +6,7 @@ export const addToWishList = errorHandler(async (req, res, next) => {
   const {id } = req.body;
   const user = await List.findOne({userId :req.userId});
   if (user) {
-    const product = user.products.find((x)=>x.productId == id)
+    const product = user.products.find((x)=>x == id)
     if (product) {
     // const productsList = user.products.filter((x)=>x.productId != id)
       // await List.findByIdAndUpdate(req.userId, {products :productsList })
