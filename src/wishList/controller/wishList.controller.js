@@ -4,7 +4,7 @@ import List from "../schema/wishList.schema.js";
 
 export const addToWishList = errorHandler(async (req, res, next) => {
   const {id } = req.body;
-  const user = await List.findById({userId :req.userId});
+  const user = await List.findOne({userId :req.userId});
   if (user) {
     const product = user.products.find((x)=>x.productId == id)
     if (product) {
