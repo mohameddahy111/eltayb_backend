@@ -31,7 +31,7 @@ export const addToWishList = errorHandler(async (req, res, next) => {
 });
 
 export const getWishList = errorHandler(async (req, res, next) => {
-  const wishList = await List.findById({ userId: req.userId }).populate(
+  const wishList = await List.findOne({ userId: req.userId }).populate(
     "products.productId"
   );
   if (wishList) {
