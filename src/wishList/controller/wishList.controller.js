@@ -42,12 +42,12 @@ export const getWishList = errorHandler(async (req, res, next) => {
   res.status(200).send(wishList);
 });
 export const deleteWishList = errorHandler(async(req , res , next)=>{
-  const {id } =res.body
+  const {id } =req.body
   const user = await List.findOne({ userId: req.userId })
   if (!user) {
     return next(new AppError('not  found user'))
   }
 const list  = user.products.filter((x)=>x._id != id)
 const newList =   await List.findOneAndUpdate({userId: req.userId } , {products :list})
-res.status(200).send('delete Item' , newList)
+res.status(200).send({message :'delete Item' , newList})
 })
