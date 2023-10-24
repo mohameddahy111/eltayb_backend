@@ -35,10 +35,18 @@ export const getWishList = errorHandler(async (req, res, next) => {
     {
       path:"products.productId" 
     }
-    
   );
   if (!wishList) {
     return res.status(200).send({ message: "wish List is Empty" });
   }
   res.status(200).send(wishList);
 });
+export const deleteWishList = errorHandler(async(req , res , next)=>{
+  const user = await List.findOne({ userId: req.userId })
+  if (!user) {
+    return next(new AppError('not  found user'))
+  }
+const list  = user.products.filter((x)=>x._id != id)
+const newList =   await List.findOneAndUpdate({userId: req.userId } , {products :list})
+res.status(200).send('delete Item' , newList)
+})
