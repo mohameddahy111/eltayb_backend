@@ -9,19 +9,21 @@ export const addCachOrders = errorHandler(async (req, res, next) => {
   const cart = await Cart.findById(req.params.idCart);
   const coupon = await Coupon.findOne({ code: req.body.couponCode });
   if (!cart) return next(new AppError("Cart not found", 404));
-  const totalPrice = cart.TAD > 0 ? cart.TAD : cart.totalPrice 
+  const totalPrice = cart.TAD > 0 ? cart.TAD : cart.totalPrice;
   if (coupon) {
     req.body.totlaPrice = parseFloat(
-      totalPrice - (totalPrice * coupon.discont) / 100 +(totalPrice * .14)+10
+      totalPrice - (totalPrice * coupon.discont) / 100 + totalPrice * 0.14 + 10
     ).toFixed(2);
   } else {
-    req.body.totlaPrice = parseFloat(totalPrice +(totalPrice*.14) +10).toFixed(2);
+    req.body.totlaPrice = parseFloat(
+      totalPrice + totalPrice * 0.14 + 10
+    ).toFixed(2);
   }
   req.body.cartId = cart._id;
   req.body.userId = req.userId;
   req.body.cartItems = cart.cartItems;
   req.body.orgenalPrice = cart.totalPrice;
-  req.body.payment_Mathed = 'cash'
+  req.body.payment_Mathed = "cash";
   const order = await Orders.insertMany(req.body);
 
   if (order) {
@@ -40,7 +42,7 @@ export const addCachOrders = errorHandler(async (req, res, next) => {
 });
 
 //----------------------------get all orders ------------------------------------//
-export const getAllOrders = errorHandler(async (req, res, next) => {
+export const getAllUserOrders = errorHandler(async (req, res, next) => {
   const orders = await Orders.find({ userId: req.userId }).populate({
     path: "cartItems.productId",
     select: ["title"],
@@ -51,6 +53,38 @@ export const getAllOrders = errorHandler(async (req, res, next) => {
 export const getOrdersDetils = errorHandler(async (req, res, next) => {
   const order = await Orders.findOne({ _id: req.params.id });
   res.status(200).send(order);
+});
+
+//----------------------------getAllOrders --------------------------------//
+export const getAllOrders = errorHandler(async (req, res, next) => {
+  const order = await Orders.find().populate(
+    { path: "userId", select: ["name"] },
+    { path: "accpetBy", select: ["name"] },
+    { path: "_isUpdateBy", select: ["name"] },
+    { path: "cartItems.productId", select: ["title"] }
+  );
+  res.status(200).send(order);
+});
+//----------------------------Get not accept order ------------------------------------//
+export const getNotAcceptOrders = errorHandler(async (req, res, next) => {
+  const order = await Orders.find({ _isAccept: false }).populate(
+    { path: "userId", select: ["name"] },
+    { path: "cartItems.productId", select: ["title"] }
+  );
+  res.status(200).send(order);
+});
+//---------------------------- accept order ------------------------------------//
+export const AcceptOrders = errorHandler(async (req, res, next) => {
+  const { id } = req.params.id;
+   await Orders.findByIdAndUpdate(
+    { _id: id },
+    {
+      _isAccept: true,
+      accpetBy: req.userId,
+    },{new :true}
+  );
+
+  res.status(200).send({ message: "Accept order " });
 });
 
 //----------------------------onLien orders ------------------------------------//

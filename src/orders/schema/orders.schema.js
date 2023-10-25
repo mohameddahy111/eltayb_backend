@@ -18,11 +18,12 @@ const ordersShema = new mongoose.Schema(
         quantity: { type: Number },
         price: { type: Number },
         final_price: { type: Number },
-        size :{type :String}
-        
+        size: { type: String },
       },
     ],
-
+    _isAccept: { type: Boolean, default: false },
+    accpetBy :{ type:mongoose.Types.ObjectId ,ref :'User'},
+    _isUpdateBy :{ type:mongoose.Types.ObjectId , ref:'User'},
     payDate: { type: Date },
     totlaPrice: { type: Number, required: true },
     orgenalPrice: { type: Number, required: true },
