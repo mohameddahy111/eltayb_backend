@@ -57,13 +57,8 @@ export const getOrdersDetils = errorHandler(async (req, res, next) => {
 
 //----------------------------getAllOrders --------------------------------//
 export const getAllOrders = errorHandler(async (req, res, next) => {
-  const order = await Orders.find().populate(
-    { path: "userId", select: ["name"] },
-    { path: "accpetBy", select: ["name"] },
-    { path: "_isUpdateBy", select: ["name"] },
-    { path: "cartItems.productId", select: ["title"] }
-  );
-  res.status(200).send(order);
+ const orders  = await Orders.find()
+  res.status(200).send(orders);
 });
 //----------------------------Get not accept order ------------------------------------//
 export const getNotAcceptOrders = errorHandler(async (req, res, next) => {

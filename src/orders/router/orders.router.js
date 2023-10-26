@@ -17,13 +17,17 @@ const router = express.Router({ mergeParams: true });
 router
   .post("/cash", auth, addCachOrders)
   .post("/online", auth, addOnLineOrders);
-router.get("/", auth, getAllUserOrders);
-router.get("/:id", auth,  getOrdersDetils);
 router.get(
-  "/new_orders",
-  auth,rolles(['admin']) ,getNotAcceptOrders
+  "/allOrders/",
+  auth,
+  getAll(Orders, [
+    { path: "userId", select: ["name"] },
+    { path: "cartItems.productId", select: ["title"] },
+  ])
 );
-router.get('/all_orders', auth,rolles(['admin']) ,getAllOrders)
-router.patch('/acceptOrders', auth, rolles(['admin']) ,AcceptOrders)
+router.get("/", auth, getAllUserOrders);
+router.get("/:id", auth, getOrdersDetils);
+router.get("/new_orders", auth, rolles(["admin"]), getNotAcceptOrders);
+router.patch("/acceptOrders", auth, rolles(["admin"]), AcceptOrders);
 
 export default router;
