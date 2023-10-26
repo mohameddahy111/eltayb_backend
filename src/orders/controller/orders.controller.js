@@ -70,7 +70,7 @@ export const getNotAcceptOrders = errorHandler(async (req, res, next) => {
 });
 //---------------------------- accept order ------------------------------------//
 export const AcceptOrders = errorHandler(async (req, res, next) => {
-  const { id } = req.params.id;
+  const { id } = req.params;
    await Orders.findByIdAndUpdate(
     { _id: id },
     {
