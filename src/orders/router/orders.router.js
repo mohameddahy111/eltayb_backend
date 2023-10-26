@@ -21,13 +21,13 @@ router.get(
   "/allOrders/",
   auth,
   getAll(Orders, [
-    { path: "userId", select: ["name"] },
+    { path: "userId", select: ["name" , "phone"] },
     { path: "cartItems.productId", select: ["title"] },
   ])
 );
 router.get("/", auth, getAllUserOrders);
 router.get("/:id", auth, getOrdersDetils);
 router.get("/new_orders", auth, rolles(["admin"]), getNotAcceptOrders);
-router.patch("/acceptOrders", auth, rolles(["admin"]), AcceptOrders);
+router.patch("/:id", auth, rolles(["admin"]), AcceptOrders);
 
 export default router;
