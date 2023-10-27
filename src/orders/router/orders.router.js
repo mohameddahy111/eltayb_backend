@@ -24,6 +24,7 @@ router.get(
   getAll(Orders, [
     { path: "userId", select: ["name" , "phone"] },
     { path: "cartItems.productId", select: ["title"] },
+    {path :'accpetBy' , select:['name' , 'email'] }
   ])
 );
 router.get("/", auth, getAllUserOrders);
