@@ -27,7 +27,7 @@ router.get(
   ])
 );
 router.get("/", auth, getAllUserOrders);
-router.get("/:id", auth, getOrdersDetils).put("/accept/:id", auth, rolles(["admin"]), AcceptOrders);;
+router.get("/:id", auth, getOrdersDetils).put("/accept/:id",auth, rolles(["admin"]), AcceptOrders);;
 router.get("/new_orders", auth, rolles(["admin"]), getNotAcceptOrders);
 
 export default router;
