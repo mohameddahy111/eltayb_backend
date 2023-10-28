@@ -61,8 +61,8 @@ export const getAllOrders = errorHandler(async (req, res, next) => {
   const all = await Orders.find()
   const pages = Math.ceil(all.length / 10 )
   const list = new ApiFeatures(Orders.find() , req.query).pagination(pages)
-  const date = await list.mongooesQuery;
-  res.status(200).send({date ,page: list.page  });
+  const data = await list.mongooesQuery;
+  res.status(200).send({data ,page: list.page  });
 
 });
 //----------------------------Get not accept order ------------------------------------//
