@@ -1,12 +1,21 @@
+
 export default  class ApiFeatures {
   constructor(mongooesQuery, queryString) {
     this.mongooesQuery = mongooesQuery;
     this.queryString = queryString;
   }
-  pagination() {
+  pagination(pages) {
     let page = this.queryString.page * 1 || 1;
-    if (this.queryString.page >= 0) page = 1;
+    if (this.queryString.page <= 0) page = 1;
     let skip = (page - 1) * 10;
+    this.page ={
+      page,
+      perPage : page== 1? 1:page -1,
+      nextPage :page+1 >pages ? pages :page+1,
+      pages:pages
+      
+
+    }
     this.mongooesQuery.skip(skip).limit(10);
     return this;
   }

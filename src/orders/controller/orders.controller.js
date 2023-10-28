@@ -4,6 +4,7 @@ import { AppError } from "../../utils/appError.js";
 import Coupon from "../../coupon/schema/coupon.schema.js";
 import Orders from "../schema/orders.schema.js";
 import Producte from "../../product/schema/product.schema.js";
+import ApiFeatures from "../../utils/apiFetchers.js";
 
 export const addCachOrders = errorHandler(async (req, res, next) => {
   const cart = await Cart.findById(req.params.idCart);
@@ -52,13 +53,17 @@ export const getAllUserOrders = errorHandler(async (req, res, next) => {
 //----------------------------get order Detils ------------------------------------//
 export const getOrdersDetils = errorHandler(async (req, res, next) => {
   const order = await Orders.findOne({ _id: req.params.id });
-  res.status(200).send(order);
+  res.status(200).send(order  );
 });
 
 //----------------------------getAllOrders --------------------------------//
 export const getAllOrders = errorHandler(async (req, res, next) => {
- const orders  = await Orders.find()
-  res.status(200).send(orders);
+  const all = await Orders.find()
+  const pages = Math.ceil(all.length / 10 )
+  const list = new ApiFeatures(Orders.find() , req.query).pagination(pages)
+  const date = await list.mongooesQuery;
+  res.status(200).send({date ,page: list.page  });
+
 });
 //----------------------------Get not accept order ------------------------------------//
 export const getNotAcceptOrders = errorHandler(async (req, res, next) => {

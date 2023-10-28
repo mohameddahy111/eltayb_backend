@@ -21,11 +21,8 @@ router.get(
   "/allOrders/",
   auth,
   rolles(['admin']),
-  getAll(Orders, [
-    { path: "userId", select: ["name" , "phone"] },
-    { path: "cartItems.productId", select: ["title"] },
-    {path :'accpetBy' , select:['name' , 'email'] }
-  ])
+  getAllOrders
+  
 );
 router.get("/", auth, getAllUserOrders);
 router.get("/:id", auth, getOrdersDetils).put("/accept/:id",auth, rolles(["admin"]), AcceptOrders);;
