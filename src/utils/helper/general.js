@@ -5,14 +5,8 @@ import { errorHandler } from "../errorHandler.js";
 
 export const getAll = (shema, option,query ) => {
   return errorHandler(async (req, res, next) => {
-    let lestOptions = new ApiFeatures(shema.find().populate(option))
-      .fields()
-      .filter()
-      .search()
-      .sort()
-      .pagination();
-    const date = await lestOptions.mongooesQuery;
-    res.status(200).send(date);
+    let data = new shema.find().populate(option)
+    res.status(200).send(data);
   });
 };
 export const deleteItem = (shema) => {
