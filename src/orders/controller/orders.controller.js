@@ -62,9 +62,10 @@ export const getAllOrders = errorHandler(async (req, res, next) => {
   const pages = Math.ceil(all.length / 10);
   const list = new ApiFeatures(
     Orders.find().populate([
-      { path: "userId", select: ["name"] },
-      { path: "cartItems.productId", select: ["title"] }]
-    ),
+      { path: "userId", select: ["name", "phone"] },
+      { path: "cartItems.productId", select: ["title"] },
+      { path: "accpetBy", select: ["name", "email"] },
+    ]),
     req.query
   )
     .pagination(pages)
