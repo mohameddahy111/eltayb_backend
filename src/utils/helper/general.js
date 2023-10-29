@@ -5,7 +5,7 @@ import { errorHandler } from "../errorHandler.js";
 
 export const getAll = (shema, option,query ) => {
   return errorHandler(async (req, res, next) => {
-    let data = new shema.find().populate(option)
+    let data = await shema.find().populate(option)
     res.status(200).send(data);
   });
 };
