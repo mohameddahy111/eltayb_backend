@@ -1,4 +1,5 @@
 import { sendVirfiyEmail } from "../../email/sendEmail.js";
+import Orders from "../../orders/schema/orders.schema.js";
 import { AppError } from "../../utils/appError.js";
 import { errorHandler } from "../../utils/errorHandler.js";
 import User from "../schema/user.schema.js";
@@ -12,17 +13,16 @@ export const addUser = errorHandler(async (req, res, next) => {
   const user = new User(req.body);
   await user.save();
   if (!user) {
-    return next(new AppError(" Error inserting user" ,404));
+    return next(new AppError(" Error inserting user", 404));
   }
   sendVirfiyEmail({
-    email :user.email,
-    url :`http://localhost:3001/users/verify/${user._id}`
-  })
+    email: user.email,
+    url: `http://localhost:3001/users/verify/${user._id}`,
+  });
   res.status(201).send("success add user");
 });
 
 //--------------------------- log in  -------------------------------------//
-
 
 export const login = errorHandler(async (req, res, next) => {
   const { password, email } = req.body;
@@ -95,22 +95,37 @@ export const changePassword = errorHandler(async (req, res, next) => {
   }
   res.status(200).send({ message: "success change password" });
 });
- //------------------------------ verfiy email --------------------------------//
- export const verfiyemail = errorHandler(async (req, res, next) => {
-const {id} = req.params;
-const user = await User.findByIdAndUpdate(id , {_isVerify :true})
-if (!user) {
-  return next(new AppError("this user not found "));
-
-}
-res.status(200).send({ message: "success verfiy emial" });
-
+//------------------------------ verfiy email --------------------------------//
+export const verfiyemail = errorHandler(async (req, res, next) => {
+  const { id } = req.params;
+  const user = await User.findByIdAndUpdate(id, { _isVerify: true });
+  if (!user) {
+    return next(new AppError("this user not found "));
+  }
+  res.status(200).send({ message: "success verfiy emial" });
 });
 
 export const getUserInfo = errorHandler(async (req, res, next) => {
-  const user  = await User.findById(req.userId).select({password :0})
+  const user = await User.findById(req.userId).select({ password: 0 });
   if (!user) {
-   return next(new AppError('this user not found' , 404))
+    return next(new AppError("this user not found", 404));
   }
-  res.status(200).send({message :'user found' , user})
-})
+  res.status(200).send({ message: "user found", user });
+});
+//----------------------------------------------------------------//
+export const getUserDetils = errorHandler(async (req, res, next) => {
+  const { userId } = req.params;
+  const user = await User.findOne({ _id: userId }).select({ password: 0 });
+  if (!user) {
+    return next(new AppError("this user not found", 404));
+  }
+  const ordesrs = await Orders.find({ userId: userId }).populate([
+    { path: "userId", select: ["name"] },
+    { path: "cartItems.productId", select: ["title"] },
+  ]);
+  res
+    .status(200)
+    .send(
+      { message: "found user" ,user_info: user,user_orders: ordesrs},
+    );
+});
