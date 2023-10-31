@@ -120,8 +120,9 @@ export const getUserDetils = errorHandler(async (req, res, next) => {
     return next(new AppError("this user not found", 404));
   }
   const ordesrs = await Orders.find({ userId: userId }).populate([
-    { path: "userId", select: ["name"] },
+    { path: "userId", select: ["name" , "phone"] },
     { path: "cartItems.productId", select: ["title"] },
+    { path: "accpetBy", select: ["name", "email"]}
   ]);
   res
     .status(200)

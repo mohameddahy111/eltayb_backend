@@ -27,6 +27,10 @@ export const addProduct = errorHandler(async (req, res, next) => {
       type: "files",
     });
   }
+  if (req.body.minImg) {
+    req.body.img = { id: "", scr: req.body.minImg };
+  }
+
   const product = new Producte(req.body);
   await product.save();
   res.status(200).send({ message: "Producte saved" });
@@ -59,6 +63,9 @@ export const updateProduct = errorHandler(async (req, res, next) => {
       type: "files",
     });
   }
-  await Producte.findOneAndUpdate({_id:id}, req.body);
+  if (req.body.minImg) {
+    req.body.img = { id: "", scr: req.body.minImg };
+  }
+  await Producte.findOneAndUpdate({ _id: id }, req.body);
   res.status(200).send({ message: "Producte is updated successfully" });
 });
