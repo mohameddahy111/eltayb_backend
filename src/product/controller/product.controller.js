@@ -27,7 +27,10 @@ export const addProduct = errorHandler(async (req, res, next) => {
       type: "files",
     });
   }
-
+if (!req.files.min_image && req.body.url_Img) {
+  req.body.img = {id:'' , scr : req.body.url_Img}
+  
+}
   const product = new Producte(req.body);
   await product.save();
   res.status(200).send({ message: "Producte saved" });
