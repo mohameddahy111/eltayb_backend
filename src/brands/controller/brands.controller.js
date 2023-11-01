@@ -10,7 +10,6 @@ export const addBrands = errorHandler(async (req, res, next) => {
     return next(new AppError("this title already exists"), 401);
   }
   if (req.file) {
-    console.log(req.file.path);
     const { public_id, secure_url } = await cloudinary.uploader.upload(
       req.file.path,
       { folder: "categories/brands" }
@@ -21,6 +20,13 @@ export const addBrands = errorHandler(async (req, res, next) => {
   req.body.categoryId = idCategory
   await Brands.insertMany(req.body);
   res.status(200).send({ message: "success add Brands" });
+});
+
+//---------------------------- get all Brtands---------------------------------------------------//
+export const getAllBrands = errorHandler(async (req, res, next) => {
+  const {idCategory} = req.params
+  const brands = await Brands.find({categoryId :idCategory})
+  res.status(200).send(brands);
 });
 
 // ------------------------------update Brands----------------------------------//
