@@ -69,3 +69,20 @@ export const updateProduct = errorHandler(async (req, res, next) => {
   await Producte.findOneAndUpdate({ _id: id }, req.body);
   res.status(200).send({ message: "Producte is updated successfully" });
 });
+//----------------------------getAllProdects--------------------------------//
+export const getAllProdects= errorHandler(async (req, res, next) => {
+  const all = await Producte.find();
+  const pages = Math.ceil(all.length / 10);
+  const list = new ApiFeatures(
+    Producte.find().populate([
+      { path: "reviews",select:['comment' ,'rating'], populate: { path: "userId", select:[ "name"] } },
+      { path: "brand", select:['title' ]},{path :'category' ,select:['title']}
+      ]),
+    req.query
+  )
+    .pagination(pages)
+    .fields()
+    .sort();
+  const data = await list.mongooesQuery;
+  res.status(200).send({ data, page: list.page });
+});

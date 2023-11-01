@@ -4,17 +4,15 @@ import Producte from "../schema/product.schema.js";
 import { auth } from "../../middleware/auth.js";
 import { rolles } from "../../middleware/rolles.js";
 import { uploadCloud } from "../../middleware/cloudinero.js";
-import { addProduct, updateProduct } from "../controller/product.controller.js";
+import {
+  addProduct,
+  getAllProdects,
+  updateProduct,
+} from "../controller/product.controller.js";
 import reviewRouter from "../../reviews/router/review.router.js";
 const router = express.Router();
 router.use("/:productId/review/", reviewRouter);
-router.get(
-  "/",
-  getAll(Producte, [
-    { path: "reviews",select:['comment' ,'rating'], populate: { path: "userId", select:[ "name"] } },
-    { path: "brand", select:['title' ]},{path :'category' ,select:['title']}
-  ])
-);
+router.get("/", getAllProdects);
 router.post(
   "/",
   auth,
