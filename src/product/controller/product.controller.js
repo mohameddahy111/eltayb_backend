@@ -4,6 +4,7 @@ import { errorHandler } from "../../utils/errorHandler.js";
 import { addImages } from "../../utils/helper/general.js";
 import Producte from "../schema/product.schema.js";
 import cloudinary from "../../utils/cloudnery.js";
+import ApiFeatures from "../../utils/apiFetchers.js";
 
 export const addProduct = errorHandler(async (req, res, next) => {
   const isExist = await Producte.findOne({ title: req.body.title });
