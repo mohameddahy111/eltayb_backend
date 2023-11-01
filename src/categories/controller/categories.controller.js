@@ -15,6 +15,9 @@ export const addCategories = errorHandler(async (req, res, next) => {
     );
     req.body.img = { id: public_id, scr: secure_url };
   }
+  if (req.body.url && !req.file) {
+    req.body.img = {id :'' , scr: req.body.url}
+  }
   req.body.createdBy = req.userId;
   await Category.insertMany(req.body);
   res.status(200).send({ message: "success add category" });
