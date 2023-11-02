@@ -7,7 +7,7 @@ export default  class ApiFeatures {
   pagination(pages) {
     let page = this.queryString.page * 1 || 1;
     if (this.queryString.page <= 0) page = 1;
-    let skip = (page - 1) * 10;
+    let skip = (page - 1) * 16;
     this.page ={
       page,
       perPage : page== 1? 1:page -1,
@@ -16,7 +16,7 @@ export default  class ApiFeatures {
       
 
     }
-    this.mongooesQuery.skip(skip).limit(10);
+    this.mongooesQuery.skip(skip).limit(16);
     return this;
   }
   filter() {

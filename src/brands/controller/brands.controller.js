@@ -5,7 +5,7 @@ import cloudinary from "../../utils/cloudnery.js";
 //----------------------------add Brands------------------------------------//
 export const addBrands = errorHandler(async (req, res, next) => {
   const isExist = await Brands.findOne({ title: req.body.title });
-  const {idCategory} = req.params
+  const { idCategory } = req.params;
   if (isExist) {
     return next(new AppError("this title already exists"), 401);
   }
@@ -16,16 +16,19 @@ export const addBrands = errorHandler(async (req, res, next) => {
     );
     req.body.img = { id: public_id, scr: secure_url };
   }
+  if (!req.file && req.body.url) {
+    req.body.img = { id: "", scr: req.body.url };
+  }
   req.body.createdBy = req.userId;
-  req.body.categoryId = idCategory
+  req.body.categoryId = idCategory;
   await Brands.insertMany(req.body);
   res.status(200).send({ message: "success add Brands" });
 });
 
 //---------------------------- get all Brtands---------------------------------------------------//
 export const getAllBrands = errorHandler(async (req, res, next) => {
-  const {idCategory} = req.params
-  const brands = await Brands.find({categoryId :idCategory})
+  const { idCategory } = req.params;
+  const brands = await Brands.find({ categoryId: idCategory });
   res.status(200).send(brands);
 });
 
@@ -37,7 +40,7 @@ export const updateBrands = errorHandler(async (req, res, next) => {
     return next(new AppError("this Brands not isExist "), 400);
   }
   if (findBrands.title != req.body.title) {
-    const isExist = await Brands.findOne({ title:req.body.title });
+    const isExist = await Brands.findOne({ title: req.body.title });
     if (isExist) {
       return next(new AppError("this title is use"), 402);
     }
@@ -50,7 +53,11 @@ export const updateBrands = errorHandler(async (req, res, next) => {
     );
     req.body.img = { id: public_id, scr: secure_url };
   }
-  req.body.updatedBy = req.userId
-  await Brands.findByIdAndUpdate(id , req.body);
-  res.status(200).send('success update Brands ')
+  if (!req.file && req.body.url) {
+    req.body.img = { id: "", scr: req.body.url };
+  }
+
+  req.body.updatedBy = req.userId;
+  await Brands.findByIdAndUpdate(id, req.body);
+  res.status(200).send("success update Brands ");
 });

@@ -19,10 +19,10 @@ const producteSchema = new mongoose.Schema(
       {
         size: { type: String, required: true },
         price: { type: Number, required: true },
+        offer_value: { type: Number },
+        final_price: { type: Number },
       },
     ],
-    offer_value: { type: Number },
-    final_price: { type: Number },
     // ----------------------------Object------------------------------------//
     img: { type: Object },
     images: { type: [Object] },
@@ -44,16 +44,6 @@ const producteSchema = new mongoose.Schema(
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
-// producteSchema.pre("save", function () {
-//   this.final_price = parseFloat(
-//     this.price_size.price - (this.price_size.price * this.offer_value) / 100
-//   ).toFixed(2);
-// });
-// producteSchema.pre("findOneAndUpdate", function () {
-//   this._update.final_price = parseFloat(
-//     this._update.price_size.price - (this._update.price_size.price * this._update.offer_value) / 100
-//   ).toFixed(2);
-// });
 producteSchema.virtual("reviews", {
   foreignField: "productId",
   localField: "_id",
