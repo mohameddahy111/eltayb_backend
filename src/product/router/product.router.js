@@ -7,12 +7,14 @@ import { uploadCloud } from "../../middleware/cloudinero.js";
 import {
   addProduct,
   getAllProdects,
+  getOneProdect,
   updateProduct,
 } from "../controller/product.controller.js";
 import reviewRouter from "../../reviews/router/review.router.js";
 const router = express.Router();
 router.use("/:productId/review/", reviewRouter);
 router.get("/", getAllProdects);
+router.get("/:slug", getOneProdect);
 router.post(
   "/",
   auth,

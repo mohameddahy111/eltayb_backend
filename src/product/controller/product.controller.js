@@ -28,10 +28,9 @@ export const addProduct = errorHandler(async (req, res, next) => {
       type: "files",
     });
   }
-if (!req.files.min_image && req.body.url_Img) {
-  req.body.img = {id:'' , scr : req.body.url_Img}
-  
-}
+  if (!req.files.min_image && req.body.url_Img) {
+    req.body.img = { id: "", scr: req.body.url_Img };
+  }
   const product = new Producte(req.body);
   await product.save();
   res.status(200).send({ message: "Producte saved" });
@@ -71,14 +70,19 @@ export const updateProduct = errorHandler(async (req, res, next) => {
   res.status(200).send({ message: "Producte is updated successfully" });
 });
 //----------------------------getAllProdects--------------------------------//
-export const getAllProdects= errorHandler(async (req, res, next) => {
+export const getAllProdects = errorHandler(async (req, res, next) => {
   const all = await Producte.find();
   const pages = Math.ceil(all.length / 10);
   const list = new ApiFeatures(
     Producte.find().populate([
-      { path: "reviews",select:['comment' ,'rating'], populate: { path: "userId", select:[ "name"] } },
-      { path: "brand", select:['title' ]},{path :'category' ,select:['title']}
-      ]),
+      {
+        path: "reviews",
+        select: ["comment", "rating"],
+        populate: { path: "userId", select: ["name"] },
+      },
+      { path: "brand", select: ["title"] },
+      { path: "category", select: ["title"] },
+    ]),
     req.query
   )
     .pagination(pages)
@@ -86,4 +90,19 @@ export const getAllProdects= errorHandler(async (req, res, next) => {
     .sort();
   const data = await list.mongooesQuery;
   res.status(200).send({ data, page: list.page });
+});
+//----------------------------getOneProdect--------------------------------//
+export const getOneProdect = errorHandler(async (req, res, next) => {
+  const { slug } = req.query.slug;
+  const product = await Producte.findOne({ slug }).populate([
+    {
+      path: "reviews",
+      select: ["comment", "rating"],
+      populate: { path: "userId", select: ["name"] },
+    },
+    { path: "brand", select: ["title"] },
+    { path: "category", select: ["title"] },
+  ]);
+
+  res.status(200).send({ product });
 });
