@@ -93,8 +93,9 @@ export const getAllProdects = errorHandler(async (req, res, next) => {
 });
 //----------------------------getOneProdect--------------------------------//
 export const getOneProdect = errorHandler(async (req, res, next) => {
-  const { slug } = req.query;
-  const product = await Producte.findOne({ slug }).populate([
+  const { slug } = req.params;
+  console.log(slug)
+  const product = await Producte.findOne({ slug : slug }).populate([
     {
       path: "reviews",
       select: ["comment", "rating"],

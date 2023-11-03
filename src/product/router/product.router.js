@@ -13,8 +13,8 @@ import {
 import reviewRouter from "../../reviews/router/review.router.js";
 const router = express.Router();
 router.use("/:productId/review/", reviewRouter);
-router.get("/", getAllProdects);
 router.get("/:slug", getOneProdect);
+router.get("/", getAllProdects);
 router.post(
   "/",
   auth,
