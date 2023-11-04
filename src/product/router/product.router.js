@@ -36,6 +36,6 @@ router.patch(
   ]),
   updateProduct
 );
-router.put('/statue', auth, rolles['admin'] ,chageStatue)
 router.delete("/:id", deleteItem(Producte));
+router.put("/statue"  ,auth , rolles(["admin"]),chageStatue )
 export default router;
