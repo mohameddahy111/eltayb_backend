@@ -63,8 +63,8 @@ export const updateProduct = errorHandler(async (req, res, next) => {
       type: "files",
     });
   }
-  if (req.body.minImg) {
-    req.body.img = { id: "", scr: req.body.minImg };
+  if (!req.files.min_image && req.body.url_Img) {
+    req.body.img = { id: "", scr: req.body.url_Img };
   }
   await Producte.findOneAndUpdate({ _id: id }, req.body);
   res.status(200).send({ message: "Producte is updated successfully" });
