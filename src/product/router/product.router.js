@@ -6,6 +6,7 @@ import { rolles } from "../../middleware/rolles.js";
 import { uploadCloud } from "../../middleware/cloudinero.js";
 import {
   addProduct,
+  chageStatue,
   getAllProdects,
   getOneProdect,
   updateProduct,
@@ -35,5 +36,6 @@ router.patch(
   ]),
   updateProduct
 );
+router.put('/statue', auth, rolles['admin'] ,chageStatue)
 router.delete("/:id", deleteItem(Producte));
 export default router;

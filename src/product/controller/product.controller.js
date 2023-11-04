@@ -107,3 +107,14 @@ export const getOneProdect = errorHandler(async (req, res, next) => {
 
   res.status(200).send({ product });
 });
+
+
+//----------------------------chage statue--------------------------------//
+export const chageStatue = errorHandler(async (req, res, next) => {
+  const {productId , statue}=req.body
+  const item  = await Producte.findByIdAndUpdate({_id :productId } , {statue} , {new:true})
+  if (!item) {
+    return next(new AppError('this item not found' , 404));
+  }
+  res.status(200).send({ message :'statue of product is Changed' });
+});
