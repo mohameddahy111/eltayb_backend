@@ -112,7 +112,7 @@ export const getOneProdect = errorHandler(async (req, res, next) => {
 //----------------------------chage statue--------------------------------//
 export const chageStatue = errorHandler(async (req, res, next) => {
   const {productId , statue}=req.body
-  const item  = await Producte.findByIdAndUpdate({_id :productId } , {statue} , {new:true})
+  const item  = await Producte.findByIdAndUpdate(productId , {statue} , {new:true})
   if (!item) {
     return next(new AppError('this item not found' , 404));
   }
