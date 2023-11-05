@@ -130,3 +130,14 @@ export const getUserDetils = errorHandler(async (req, res, next) => {
       { message: "found user" ,user_info: user,user_orders: ordesrs},
     );
 });
+
+//-------------------------set Block---------------------------------------//
+export const setSettingByAdmin = errorHandler(async (req, res, next) => {
+  const {id } = req.body
+  const user = await User.findByIdAndUpdate(id ,req.body , {new:true})
+  if (!user) {
+  return  next(new AppError("Not found User" , 404))
+  }
+  res.status(200).send({ message:'User updated successfully'})
+
+});
