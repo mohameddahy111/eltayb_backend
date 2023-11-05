@@ -141,3 +141,10 @@ export const setSettingByAdmin = errorHandler(async (req, res, next) => {
   res.status(200).send({ message:'User updated successfully'})
 
 });
+//-------------------------set Block---------------------------------------//
+export const userLogout = errorHandler(async (req, res, next) => {
+  const {id } = req.params
+ await User.findByIdAndUpdate(id ,req.body,{new :true} )
+  res.status(200).send({ message:'User updated successfully'})
+
+});
