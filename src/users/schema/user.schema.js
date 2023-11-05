@@ -17,7 +17,9 @@ userschema.pre( "save", function(){
   this.password = bcrypt.hashSync(this.password , +process.env.SALT)
 })
 userschema.pre( "findOneAndUpdate", function(){
-  this._update.password = bcrypt.hashSync(this._update.password , +process.env.SALT)
+  if (this._update.password) {
+    this._update.password = bcrypt.hashSync(this._update.password , +process.env.SALT)
+  }
 })
 
 const User = mongoose.model("User", userschema);
