@@ -24,3 +24,4 @@ router.patch('/' ,auth,validetor(adduserValidation)  ,updateUser)
 router.delete('/:id' ,auth,rolles(['admin' ]), deleteItem(User))
 
 export default router   
+

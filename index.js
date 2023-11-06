@@ -9,6 +9,7 @@ import cartRouter from './src/cart/router/cart.router.js';
 import orderRouter from './src/orders/router/orders.router.js';
 import wishListRouter from './src/wishList/router/wishList.router.js';
 import cors from 'cors';
+import {Server  } from "socket.io";
 
 dotenv.config()
 const app = express();
@@ -27,8 +28,15 @@ app.use('/wishList/' ,wishListRouter)
 app.use((err , req, res ,next)=>{
   res.status(err.status || 400).send(err.message)
 })
-
 connect()
-app.listen(process.env.PORT|| port , ()=>{
+const server =  app.listen(process.env.PORT|| port , ()=>{
   console.log(`http://localhost:${port}`)
 })
+const io = new Server(server , {
+  cors :"*"
+})
+io.on('connection',socket =>{
+  console.log(socket.id)
+})
+
+
