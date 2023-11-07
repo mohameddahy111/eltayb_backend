@@ -5,6 +5,7 @@ import { addImages } from "../../utils/helper/general.js";
 import Producte from "../schema/product.schema.js";
 import cloudinary from "../../utils/cloudnery.js";
 import ApiFeatures from "../../utils/apiFetchers.js";
+import socketIo from "../../utils/helper/socket.js";
 
 export const addProduct = errorHandler(async (req, res, next) => {
   const isExist = await Producte.findOne({ title: req.body.title });
@@ -118,3 +119,5 @@ export const chageStatue = errorHandler(async (req, res, next) => {
   }
   res.status(200).send({ message :'statue of product is Changed' });
 });
+
+//----------------------------socket io --------------------------------//
