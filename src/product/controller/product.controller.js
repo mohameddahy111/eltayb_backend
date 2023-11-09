@@ -47,7 +47,9 @@ export const updateProduct = errorHandler(async (req, res, next) => {
   req.body.slug = slugify(req.body.title);
   req.body.updateBy = req.userId;
   if (req.files.min_image) {
-    await cloudinary.uploader.destroy(item.img.id);
+    if (item.img.id) {
+      await cloudinary.uploader.destroy(item.img.id);
+    }
     req.body.img = await addImages({
       path: req.files.min_image,
       folder: `/prodectes/${req.body.slug}`,
