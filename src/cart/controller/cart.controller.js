@@ -69,7 +69,7 @@ export const removItem = errorHandler(async (req, res, next) => {
 export const getUserCart = errorHandler(async (req, res, next) => {
   const product = await Producte.find();
   const cart = await Cart.findOne({ userId: req.userId })
-  const newCartItems = product.map(ele=>ele._id == cart?.cartItems.map(item=>item.productId))
+  const newCartItems = cart?.cartItems.map(ele=>ele._id == product.map(item=>item.productId))
   const newCart = await Cart.findOneAndUpdate({userId:req.userId }, {
     cartItems: newCartItems
   },{new:true}).populate({
