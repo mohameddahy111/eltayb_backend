@@ -72,7 +72,7 @@ export const getUserCart = errorHandler(async (req, res, next) => {
     path: "cartItems.productId",
     select: ["title"],
   });
-  const newCartItems = cart?.cartItems.filter(
+  const newCartItems = cart?.cartItems.productId.filter(
     (item) => item._id === product.map((ele) => ele._id)
   );
   const newCart = await Cart.findOneAndUpdate({userId:req.userId }, {
