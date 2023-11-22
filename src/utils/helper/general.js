@@ -16,7 +16,7 @@ export const deleteItem = (shema) => {
     if (!item) {
       return next(new AppError("this id not found"));
     }
-    if (item.img) {
+    if (item.img.id) {
       await cloudinary.uploader.destroy(item.img.id);
     }
     if (item.images) {

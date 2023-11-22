@@ -6,7 +6,7 @@ export const getAllChats = errorHandler(async (req, res, next) => {
     path: "userIdSend",
     select: ["name", "phone", "email", "_isAdmin"],
   });
-  const newMessage = allChats.map((x) => x.sendMessage.read == false);
+  const newMessage = allChats.filter((x) => x.sendMessage.read == false);
   res
     .status(200)
     .send({ allChats, newMessage, number_Unread: newMessage.length });
