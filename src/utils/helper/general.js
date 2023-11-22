@@ -12,7 +12,7 @@ export const getAll = (shema, option,query ) => {
 export const deleteItem = (shema) => {
   return errorHandler(async (req, res, next) => {
     const { id } = req.params;
-    const item = await shema.findOneAndDelete(id);
+    const item = await shema.findByIdAndDelete(id);
     if (!item) {
       return next(new AppError("this id not found"));
     }
