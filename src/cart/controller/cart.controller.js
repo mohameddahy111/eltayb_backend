@@ -77,7 +77,10 @@ export const getUserCart = errorHandler(async (req, res, next) => {
   );
   const newCart = await Cart.findOneAndUpdate({userId:req.userId }, {
     cartItems: newCartItems
-  },{new:true})
+  },{new:true}).populate({
+    path: "cartItems.productId",
+    select: ["title"],
+  });
 
   if (!cart) {
     return next(new AppError("you don't have cart", 404));
