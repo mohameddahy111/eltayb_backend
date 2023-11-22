@@ -19,7 +19,7 @@ export const addCart = errorHandler(async (req, res, next) => {
   }
   const size_price = product.price_size.find((x) => x.size == size);
   req.body.price = size_price.price;
-  req.body.descount = size_price.offer_value
+  req.body.descount = size_price.offer_value;
   req.body.final_price = size_price.final_price;
 
   const isExistCart = await Cart.findOne({ userId: req.userId });
@@ -67,12 +67,20 @@ export const removItem = errorHandler(async (req, res, next) => {
 });
 
 export const getUserCart = errorHandler(async (req, res, next) => {
+  const product = await Producte.find();
   const cart = await Cart.findOne({ userId: req.userId }).populate({
     path: "cartItems.productId",
     select: ["title"],
   });
+  const newCartItems = cart?.cartItems.filter(
+    (item) => item._id === product.map((ele) => ele._id)
+  );
+  const newCart = await Cart.findOneAndUpdate({userId:req.userId }, {
+    cartItems: newCartItems
+  },{new:true})
+
   if (!cart) {
     return next(new AppError("you don't have cart", 404));
   }
-  res.status(200).send({ cart });
+  res.status(200).send({ newCart });
 });
