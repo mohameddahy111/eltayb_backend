@@ -68,11 +68,10 @@ export const removItem = errorHandler(async (req, res, next) => {
 
 export const getUserCart = errorHandler(async (req, res, next) => {
   const product = await Producte.find();
-  const cart = await Cart.findOne({ userId: req.userId })
-  const newCartItems = cart?.cartItems.map(ele=>ele._id == product.map(item=>item.productId))
-  const newCart = await Cart.findOneAndUpdate({userId:req.userId }, {
-    cartItems: newCartItems
-  },{new:true}).populate({
+  const oldCart = await Cart.findOne({userId :req.userId})
+  const newCart = oldCart?.cartItems.filter(item=>product.map(x=>x.id == item.productId))
+
+  const cart = await Cart.findOneAndUpdate({ userId: req.userId } ,{cartItems :newCart}).populate({
     path: "cartItems.productId",
     select: ["title"],
   });
@@ -80,5 +79,5 @@ export const getUserCart = errorHandler(async (req, res, next) => {
   if (!cart) {
     return next(new AppError("you don't have cart", 404));
   }
-  res.status(200).send({ newCart });
+  res.status(200).send({ cart });
 });
