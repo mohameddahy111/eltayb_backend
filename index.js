@@ -10,9 +10,7 @@ import orderRouter from "./src/orders/router/orders.router.js";
 import wishListRouter from "./src/wishList/router/wishList.router.js";
 import chatRouter from "./src/chat/router/chat.router.js";
 import cors from "cors";
-import socketIo from "./src/utils/helper/socket.js";
-import Chat from "./src/chat/schema/chat.schema.js";
-// import {Server  } from "socket.io";
+// import Chat from "./src/chat/schema/chat.schema.js";
 
 dotenv.config();
 const app = express();
@@ -33,41 +31,37 @@ app.use((err, req, res, next) => {
   res.status(err.status || 400).send(err.message);
 });
 connect();
-export const server = () => {
-  const se = app.listen(process.env.PORT || port, () => {
-    console.log(`http://localhost:${port}`);
-  });
-  return se;
-};
+ app.listen(process.env.PORT || port, () => {
+    console.log(`http://localhost:${port}`)})
 
-socketIo().io.on("connection", (socket) => {
-  socket.on("openChat", async (data) => {
-    const getChat = await Chat.findOne({ userIdSend: data.id }).populate({
-      path: "userIdSend",
-      select: ["name", "phone", "email", "_isAdmin"],
-    });
-    if (getChat) {
-      socket.emit("getChat", getChat);
+// socketIo().io.on("connection", (socket) => {
+//   socket.on("openChat", async (data) => {
+//     const getChat = await Chat.findOne({ userIdSend: data.id }).populate({
+//       path: "userIdSend",
+//       select: ["name", "phone", "email", "_isAdmin"],
+//     });
+//     if (getChat) {
+//       socket.emit("getChat", getChat);
       
-    } else {
-      socket.emit("getChat", null)
-    }
-  });
-  socket.on("sendMessage", async (data) => {
-    const findUser = await Chat.findOne({ userIdSend: data.id }).populate({
-      path: "userIdSend",
-      select: ["name", "phone", "email", "_isAdmin"],
-    });
-    if (findUser) {
-      findUser.sendMessage.push({ send: data.send });
-      findUser?.save();
-      socket.emit("addMessage", findUser);
-    } else {
-      const newUser = await Chat.insertMany({
-        userIdSend: data.id,
-        sendMessage: { send: data.send },
-      });
-      socket.emit("addMessage", newUser);
-    }
-  });
-});
+//     } else {
+//       socket.emit("getChat", null)
+//     }
+//   });
+//   socket.on("sendMessage", async (data) => {
+//     const findUser = await Chat.findOne({ userIdSend: data.id }).populate({
+//       path: "userIdSend",
+//       select: ["name", "phone", "email", "_isAdmin"],
+//     });
+//     if (findUser) {
+//       findUser.sendMessage.push({ send: data.send });
+//       findUser?.save();
+//       socket.emit("addMessage", findUser);
+//     } else {
+//       const newUser = await Chat.insertMany({
+//         userIdSend: data.id,
+//         sendMessage: { send: data.send },
+//       });
+//       socket.emit("addMessage", newUser);
+//     }
+//   });
+// });
