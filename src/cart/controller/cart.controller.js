@@ -67,10 +67,7 @@ export const removItem = errorHandler(async (req, res, next) => {
 });
 
 export const getUserCart = errorHandler(async (req, res, next) => {
-  const cart = await Cart.findOne({ userId: req.userId }).populate({
-    path: "cartItems.productId",
-    select: ["title"],
-  });
+  const cart = await Cart.findOne({ userId: req.userId })
 
   const list  =  cart?.cartItems.filter(ele=>ele.productId != null)
   const newcart = await Cart.findOneAndUpdate(
@@ -78,7 +75,10 @@ export const getUserCart = errorHandler(async (req, res, next) => {
     {
      cartItems: list,
     }
-  );
+  ).populate({
+    path: "cartItems.productId",
+    select: ["title"],
+  });;
 
   if (!cart) {
     return next(new AppError("you don't have cart", 404));
