@@ -44,7 +44,7 @@ export const addCachOrders = errorHandler(async (req, res, next) => {
 
 //----------------------------get all orders ------------------------------------//
 export const getAllUserOrders = errorHandler(async (req, res, next) => {
-  const all = await Orders.find({_id: req.params.id});
+  const all = await Orders.find({_id: req.userId});
   const pages = Math.ceil(all.length / 10);
   const list = new ApiFeatures(
     Orders.find({_id: req.params.id}).populate([
