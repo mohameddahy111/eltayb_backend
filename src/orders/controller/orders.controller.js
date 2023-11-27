@@ -52,8 +52,14 @@ export const getAllUserOrders = errorHandler(async (req, res, next) => {
 });
 //----------------------------get order Detils ------------------------------------//
 export const getOrdersDetils = errorHandler(async (req, res, next) => {
-  const order = await Orders.findOne({ _id: req.params.id });
-  res.status(200).send(order);
+  const all = await Orders.findOne({ _id: req.params.id });
+  const pages = Math.ceil(all.length / 10);
+  const list = new ApiFeatures(Orders.find({ _id: req.params.id }) ,req.query)
+  .pagination(pages)
+  .fields()
+  .sort();
+const data = await list.mongooesQuery;
+res.status(200).send({ data, page: list.page });
 });
 
 //----------------------------getAllOrders --------------------------------//
