@@ -47,7 +47,7 @@ export const getAllUserOrders = errorHandler(async (req, res, next) => {
   const all = await Orders.find({userId: req.userId});
   const pages = Math.ceil(all.length / 10);
   const list = new ApiFeatures(
-    Orders.find({_id: req.params.id}).populate([
+    Orders.find({userId: req.userId}).populate([
       {path: "cartItems.productId", select: ["title"]}
     ]),
     req.query
