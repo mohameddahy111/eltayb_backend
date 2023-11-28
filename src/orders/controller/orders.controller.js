@@ -45,7 +45,7 @@ export const addCachOrders = errorHandler(async (req, res, next) => {
 //----------------------------get all orders ------------------------------------//
 export const getAllUserOrders = errorHandler(async (req, res, next) => {
   const all = await Orders.find({userId: req.userId});
-  const pages = Math.ceil(all.length / 10);
+  const pages = Math.ceil(all.length / 16);
   const list = new ApiFeatures(
     Orders.find({userId: req.userId}).populate([
       {path: "cartItems.productId", select: ["title"]}
@@ -73,7 +73,7 @@ export const getOrdersDetils = errorHandler(async (req, res, next) => {
 //----------------------------getAllOrders --------------------------------//
 export const getAllOrders = errorHandler(async (req, res, next) => {
   const all = await Orders.find();
-  const pages = Math.ceil(all.length / 10);
+  const pages = Math.ceil(all.length / 16);
   const list = new ApiFeatures(
     Orders.find().populate([
       {path: "userId", select: ["name", "phone"]},

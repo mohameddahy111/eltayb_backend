@@ -10,7 +10,7 @@ export default  class ApiFeatures {
     let skip = (page - 1) * 16;
     this.page ={
       page,
-      perPage : page== 1? 1:page -1,
+      perPage : page>= 1? 1:page -1,
       nextPage :page+1 >pages ? pages :page+1,
       pages:pages
       

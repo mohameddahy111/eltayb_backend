@@ -74,7 +74,7 @@ export const updateProduct = errorHandler(async (req, res, next) => {
 //----------------------------getAllProdects--------------------------------//
 export const getAllProdects = errorHandler(async (req, res, next) => {
   const all = await Producte.find();
-  const pages = Math.ceil(all.length / 10);
+  const pages = Math.ceil(all.length / 16);
   const list = new ApiFeatures(
     Producte.find().populate([
       {
