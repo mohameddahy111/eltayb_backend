@@ -73,7 +73,7 @@ export const getOrdersDetils = errorHandler(async (req, res, next) => {
 //----------------------------get All Admin Orders --------------------------------//
 export const getAllOrders = errorHandler(async (req, res, next) => {
   const all = await Orders.find();
-  const pages = Math.ceil(all.length / 10);
+  const pages = Math.ceil(all.length / 16);
   const list = new ApiFeatures(
     Orders.find().populate([
       {path: "userId", select: ["name", "phone"]},
@@ -82,7 +82,7 @@ export const getAllOrders = errorHandler(async (req, res, next) => {
     ]),
     req.query
   )
-    .pagination(pages , 10)
+    .pagination(pages )
     .fields()
     .sort();
   const data = await list.mongooesQuery;
