@@ -56,8 +56,7 @@ export const getAllUserOrders = errorHandler(async (req, res, next) => {
     .fields()
     .sort();
   const data = await list.mongooesQuery;
-  const unaccepted =  await Orders.find({_isAccept: false})
-  res.status(200).send({data, page: list.page , unaccepted});
+  res.status(200).send({data, page: list.page , });
 });
 //----------------------------get order Detils ------------------------------------//
 export const getOrdersDetils = errorHandler(async (req, res, next) => {
@@ -87,7 +86,9 @@ export const getAllOrders = errorHandler(async (req, res, next) => {
     .fields()
     .sort();
   const data = await list.mongooesQuery;
-  res.status(200).send({data, page: list.page});
+  const unaccepted =  await Orders.find({_isAccept: false})
+
+  res.status(200).send({data, page: list.page , unaccepted});
 });
 //----------------------------Get not accept order ------------------------------------//
 export const getNotAcceptOrders = errorHandler(async (req, res, next) => {
