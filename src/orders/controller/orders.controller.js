@@ -42,21 +42,22 @@ export const addCachOrders = errorHandler(async (req, res, next) => {
   res.status(201).send({message: "Success created order", order});
 });
 
-//----------------------------get all orders ------------------------------------//
+//----------------------------get all user orders ------------------------------------//
 export const getAllUserOrders = errorHandler(async (req, res, next) => {
   const all = await Orders.find({userId: req.userId});
-  const pages = Math.ceil(all.length / 16);
+  const pages = Math.ceil(all.length / 10);
   const list = new ApiFeatures(
     Orders.find({userId: req.userId}).populate([
       {path: "cartItems.productId", select: ["title"]}
     ]),
     req.query
   )
-    .pagination(pages)
+    .pagination(pages , 10)
     .fields()
     .sort();
   const data = await list.mongooesQuery;
-  res.status(200).send({data, page: list.page});
+  const unaccepted =  await Orders.find({_isAccept: false})
+  res.status(200).send({data, page: list.page , unaccepted});
 });
 //----------------------------get order Detils ------------------------------------//
 export const getOrdersDetils = errorHandler(async (req, res, next) => {
@@ -70,10 +71,10 @@ export const getOrdersDetils = errorHandler(async (req, res, next) => {
   res.status(200).send(order);
 });
 
-//----------------------------getAllOrders --------------------------------//
+//----------------------------get All Admin Orders --------------------------------//
 export const getAllOrders = errorHandler(async (req, res, next) => {
   const all = await Orders.find();
-  const pages = Math.ceil(all.length / 16);
+  const pages = Math.ceil(all.length / 10);
   const list = new ApiFeatures(
     Orders.find().populate([
       {path: "userId", select: ["name", "phone"]},
@@ -82,7 +83,7 @@ export const getAllOrders = errorHandler(async (req, res, next) => {
     ]),
     req.query
   )
-    .pagination(pages)
+    .pagination(pages , 10)
     .fields()
     .sort();
   const data = await list.mongooesQuery;
