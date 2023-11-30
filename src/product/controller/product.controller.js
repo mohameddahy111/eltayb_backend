@@ -112,7 +112,14 @@ export const getOneProdect = errorHandler(async (req, res, next) => {
 
 // ----------------------------slider data-------------------------------//
 export const getSlider = errorHandler(async (req, res, next) => {
-  const swiperProducts = await Producte.find({_isShowe: true});
+  const swiperProducts = await Producte.find({_isShowe: true}).populate(      {
+    path: "reviews",
+    select: ["comment", "rating"],
+    populate: {path: "userId", select: ["name"]}
+  },
+  {path: "brand", select: ["title"]},
+  {path: "category", select: ["title"]}
+);
   if (!swiperProducts) {
     res.status(404).send({product: []});
   }
