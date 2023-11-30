@@ -14,10 +14,10 @@ import {
 } from "../controller/product.controller.js";
 import reviewRouter from "../../reviews/router/review.router.js";
 const router = express.Router();
-router.use("/:productId/review/", reviewRouter);
-router.get("/:slug", getOneProdect);
 router.get("/", getAllProdects);
-router.get('/swiper_Data' , getSlider)
+router.get('/swiper/' , getSlider)
+router.get("/:slug", getOneProdect);
+router.use("/:productId/review/", reviewRouter);
 router.post(
   "/",
   auth,

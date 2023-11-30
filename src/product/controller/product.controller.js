@@ -112,12 +112,11 @@ export const getOneProdect = errorHandler(async (req, res, next) => {
 
 // ----------------------------slider data-------------------------------//
 export const getSlider = errorHandler(async (req, res, next) => {
-  const swiperProducts = await Producte.find({ _isShowe: true });
+  const swiperProducts = await Producte.find({_isShowe: true});
   if (!swiperProducts) {
-    res.status(200).send({product :[]})
+    res.status(404).send({product: []});
   }
-  res.status(200).send({swiperProducts})
-
+  res.status(200).send({product: swiperProducts});
 });
 
 //----------------------------chage statue--------------------------------//
