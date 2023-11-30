@@ -30,16 +30,19 @@ export const addToWishList = errorHandler(async (req, res, next) => {
     res.status(201).send({message: "Success Add item to Wish List"});
   }
 });
+//----------------------------------------------------------------//
 
 export const getWishList = errorHandler(async (req, res, next) => {
-  const wishList = await List.findOne({userId: req.userId}).populate({
-    path: "products.productId"
-  });
+  const wishList = await List.findOne({userId: req.userId}).populate([{
+    path: "products.productId"   , select:['title']
+  }]);
   if (!wishList) {
     return res.status(200).send({message: "wish List is Empty"});
   }
   res.status(200).send(wishList);
 });
+
+//----------------------------------------------------------------//
 export const deleteWishList = errorHandler(async (req, res, next) => {
   const {id} = req.body;
   const user = await List.findOne({userId: req.userId});
