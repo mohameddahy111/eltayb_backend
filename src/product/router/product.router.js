@@ -17,7 +17,7 @@ const router = express.Router();
 router.use("/:productId/review/", reviewRouter);
 router.get("/:slug", getOneProdect);
 router.get("/", getAllProdects);
-router.get('/swiper_Data' , getSlider())
+router.get('/swiper_Data' , getSlider)
 router.post(
   "/",
   auth,
